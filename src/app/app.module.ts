@@ -16,13 +16,15 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { TableComponent } from './components/table/table.component';
+import { BoardComponent } from './components/board/board.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     LandingComponent,
-    TableComponent
+    TableComponent,
+    BoardComponent
   ],
   imports: [
     BrowserModule,

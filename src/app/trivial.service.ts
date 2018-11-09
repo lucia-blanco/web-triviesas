@@ -7,12 +7,13 @@ import { HttpClient} from '@angular/common/http';
 export class TrivialService {
   base_url = 'https://opentdb.com/api.php?amount=1';
   category;
-  geo = [22, 24];
-  art = [10, 25, 29];
-  his = [23, 20];
-  ent = [11, 12, 14, 15, 32];
-  sci = [17, 18, 19, 30];
-  categories = [this.geo, this.art, this.his, this.ent, this.sci];
+  blue = [22, 24];
+  violet = [10, 25, 29];
+  yellow = [23, 20];
+  pink = [11, 12, 14, 15, 32];
+  green = [17, 18, 19, 30];
+  orange = [9, 21];
+  categories = [this.blue, this.violet, this.yellow, this.pink, this.green, this.orange];
 
   constructor(private http: HttpClient) {}
   getQuestion(category: string, difficulty: string) {
