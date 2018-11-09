@@ -11,7 +11,6 @@ export class AppComponent {
   title = 'triviesas';
   constructor(public fbS: FirebaseService) {
   }
-
   signOut() {
     this.fbS.logout();
   }
