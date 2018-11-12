@@ -129,15 +129,39 @@ export class FirebaseService {
 
   createTable() {
     const path = environment.tableNode;
-    console.log(path);
+    const time = new Date().getTime();
+    console.log(time);
     const data = {
         creator: this.authState.uid,
+        createdAt: time
     };
-    this.afDb.list(path).push(data);
+    console.log(data);
     const table = this.afDb.list(path).push(data);
+    this.pushUserIntoTable(table.key);
     return table.key;
   }
 
+  pushUserIntoTable(id) {
+    const path = environment.tableNode +  `/${id}/players/${this.currentUserId}`;
+    const data = {
+      id: this.authState.uid,
+      name: this.authState.displayName,
+      turn: false,
+      score: 0
+    };
+    this.afDb.object(path).set(data);
+  }
+
+  updateUserTableInfo(tableId, points, turn) {
+    const path = environment.tableNode +  `/${tableId}/players/${this.currentUserId}`;
+    const data = {
+      id: this.authState.uid,
+      name: this.authState.displayName,
+      turn: turn,
+      score: points
+    };
+    this.afDb.object(path).set(data);
+  }
 
   /* ****** PASSWORD STUFF ****** */
 
