@@ -109,7 +109,7 @@ export class FirebaseService {
         wrongs: 0
     };
 
-    this.afDb.object(path).update(data)
+    this.afDb.object(path).set(data)
     .catch(error => console.log(error));
   }
 
@@ -126,6 +126,18 @@ export class FirebaseService {
     this.afDb.object(path).update(data)
     .catch(error => console.log(error));
   }
+
+  createTable() {
+    const path = environment.tableNode;
+    console.log(path);
+    const data = {
+        creator: this.authState.uid,
+    };
+    this.afDb.list(path).push(data);
+    const table = this.afDb.list(path).push(data);
+    return table.key;
+  }
+
 
   /* ****** PASSWORD STUFF ****** */
 

@@ -22,6 +22,7 @@ export class LandingComponent implements OnInit {
   user;
   score;
   cat = 0;
+  tableId;
 
   constructor(private fbS: FirebaseService,
               private trS: TrivialService,
@@ -37,6 +38,12 @@ export class LandingComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.fbS.currentUser.displayName;
+  }
+
+  table() {
+    this.tableId = this.fbS.createTable();
+    console.log(this.tableId);
+    this.router.navigate(['/table', this.tableId]);
   }
 
   ask(cat, dif) {
