@@ -1,10 +1,8 @@
 <div *ngIf="!fbS.currentUser">
   <app-login></app-login>
 </div>
-
+<button *ngIf="fbS.currentUser" (click)="signOut()">Sign Out</button>
 <div *ngIf="fbS.currentUser">
   <router-outlet></router-outlet>
-  <p>aaaaa</p>
 </div>
 
-<button (click)="signOut()">Sign Out</button>

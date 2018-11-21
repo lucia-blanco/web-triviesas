@@ -46,10 +46,13 @@ export class FirebaseService {
   get currentUser(): any {
     return this.authenticated ? this.authState : null;
   }
+  get currentUserObservable(): any {
+    return this.afAuth.authState;
+  }
 
   // Returns current user UID
   get currentUserId(): string {
-    return this.authenticated ? this.authState.user.uid : '';
+    return this.authenticated ? this.authState.uid : '';
   }
 
   // Returns current user display name or Guest
@@ -64,8 +67,15 @@ export class FirebaseService {
   // Registration
   emailReg(email: string, password: string, name: string) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then((player) => {
-      this.authState = player;
-      this.updatePlayerData(name);
+      this.authState = player['user'];
+      console.log(this.authState);
+      if (player) {
+        firebase.auth().currentUser.updateProfile({
+           displayName: name,
+           photoURL: null
+        });
+      }
+      this.regPlayerData();
     })
     .catch(error => console.log(error));
   }
@@ -75,7 +85,6 @@ export class FirebaseService {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password).then((player) => {
       this.authState = player;
       console.log(this.authState);
-      // this.updatePlayerData();
     })
     .catch(error => console.log(error));
   }
@@ -90,29 +99,80 @@ export class FirebaseService {
   /* ****** DATABASE ****** */
 
   // Writes player info on database
-  private updatePlayerData(name): void {
+  regPlayerData(): void {
+    console.log(this.currentUserId);
+    const path = environment.playerNode + `/${this.authState.uid}`;
+    console.log(path);
+    const data = {
+        email: this.authState.email,
+        corrects: 0,
+        wrongs: 0
+    };
+
+    this.afDb.object(path).set(data)
+    .catch(error => console.log(error));
+  }
+
+  updatePlayerData(corrects, wrongs) {
     console.log(this.currentUserId);
     const path = environment.playerNode + `/${this.currentUserId}`;
     console.log(path);
     const data = {
-        email: this.authState.user.email,
-        displayName: name
+        email: this.authState.email,
+        corrects: corrects,
+        wrongs: wrongs
     };
 
     this.afDb.object(path).update(data)
     .catch(error => console.log(error));
   }
 
-  // Writes player info on database
-  updatePlayer(user: any, newData: any) {
-    const path = environment.playerNode + `/${this.currentUserId}/player/${user.uid}`;
-    console.log(path);
+  createTable() {
+    const path = environment.tableNode;
+    const time = new Date().getTime();
+    console.log(time);
     const data = {
-                  email: newData.email,
-                  displayName: newData.name
-                };
-    this.afDb.object(path).update(data)
-    .catch(error => console.log(error));
+        creator: this.authState.uid,
+        createdAt: time,
+        hasStarted: false,
+        question: null
+    };
+    console.log(data);
+    const table = this.afDb.list(path).push(data);
+    this.pushUserIntoTable(table.key);
+    return table.key;
+  }
+
+  playPauseTable(tableId, started) {
+    const path = environment.tableNode;
+    this.afDb.list(path).update(tableId, {hasStarted: started});
+  }
+
+  getQuestion(tableId, question, answers, correct, category) {
+    const path = environment.tableNode;
+    this.afDb.list(path).set(tableId + '/card', {question: question, answers: answers, correct: correct, category: category});
+  }
+
+  pushUserIntoTable(id) {
+    const path = environment.tableNode +  `/${id}/players/${this.currentUserId}`;
+    const data = {
+      id: this.authState.uid,
+      name: this.authState.displayName,
+      isTurn: false,
+      score: 0,
+    };
+    console.log(this.authState.displayName);
+    this.afDb.object(path).set(data);
+  }
+
+  updateUserTableInfo(tableId, uid, points, turn) {
+    const path = environment.tableNode +  `/${tableId}/players/${uid}`;
+    const data = {
+      isTurn: turn,
+      score: points
+    };
+    this.afDb.object(path).update(data);
+    console.log('user table info updated');
   }
 
   /* ****** PASSWORD STUFF ****** */

@@ -1,0 +1,17 @@
+<a [routerLink]="[ '/' ]">go back</a>
+<p>table link: {{ tableId }}</p>
+<ul>
+  <li *ngFor="let player of players">{{ player.name }}: {{ player.score }}</li>
+</ul>
+<button *ngIf="players.length > 1 && !table.hasStarted" (click)="start()">start</button>
+
+<div *ngIf="table.hasStarted && currentPlayer">
+  <h3>current player: {{ currentPlayer.name }}</h3>
+<div>
+  <h2>{{ table.card.category }}</h2>
+  <h4>{{ table.card.question }}</h4>
+  <div *ngFor="let answer of table.card.answers ; index as i;">
+    <button (click)="res(answer)">{{ answer }}</button>
+  </div>
+</div>
+</div>

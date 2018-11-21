@@ -3,4 +3,5 @@ export interface Player {
   displayName: string;
   email: string;
   totalScore: number;
+  table: string;
 }
