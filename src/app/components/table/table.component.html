@@ -1,4 +1,4 @@
-<a [routerLink]="[ '/' ]">go back</a>
+<a routerLink="">go back</a>
 <p>table link: {{ tableId }}</p>
 <ul>
   <li *ngFor="let player of players">{{ player.name }}: {{ player.score }}</li>
@@ -7,13 +7,29 @@
 
 <div *ngIf="table.hasStarted && table.card != undefined && currentPlayer != undefined">
   <h3>current player: {{ currentPlayer.name }}</h3>
-<div>
-  <h2>{{ table.card.category }}</h2>
-  <h4>{{ table.card.question }}</h4>
-  <ng-container *ngFor="let answer of table.card.answers ; index as i;">
-    <div *ngIf="currentPlayer.id == userId">
-      <button (click)="res(answer)">{{ answer }}</button>
+  <ng-container>
+    <div class="ui cards">
+      <div class="card">
+        <div class="content">
+          <span class="right floated mini ui" style="background: #f00"></span>
+          <div class="header">
+            {{ table.card.question }}
+          </div>
+          <div class="meta">
+            {{ table.card.category }}
+          </div>
+          <div class="description">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui cards" *ngIf="currentPlayer.id == userId">
+      <div class="card" *ngFor="let answer of table.card.answers ; index as i;">
+        <div class="content">
+          <div class="header" (click)="res(answer)">{{ answer }}</div>
+        </div>
+      </div>
     </div>
   </ng-container>
-</div>
 </div>

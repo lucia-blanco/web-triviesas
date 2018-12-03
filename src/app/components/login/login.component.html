@@ -6,20 +6,21 @@
       <input placeholder="Password" type="password" [(ngModel)]="password" name="password">
       <button (click)="signIn()" class="ui button">Sign In</button>
     </form>
-    <a id="register">Not registered yet?</a>
+    <a (click)="register()">Not registered yet?</a>
+  </div>
+  <div id="register" class="ui modal" style="width: 300px">
+    <div class="header">
+      <span>Sign Up</span>
+      <i class="close icon" style="float:right; cursor: pointer;" (click)="close()"></i>
+    </div>
+    <div class="content">
+      <form class="ui form" style="text-align:center">
+        <input placeholder="Email address" type="email" [(ngModel)]="nemail" name="nemail">
+        <input placeholder="Name" type="text" [(ngModel)]="nname" name="nname">
+        <input placeholder="Password" type="password" [(ngModel)]="npassword" name="npassword">
+        <button (click)="signUp()" class="ui button" style="margin-top:5px">Sign Up</button>
+      </form>
+    </div>
   </div>
 </main>
 
-<div class="ui modal">
-  <div class="header">
-    Sign Up
-  </div>
-  <div class="content">
-    <form>
-      <input placeholder="Email address" type="email" [(ngModel)]="nemail" name="nemail">
-      <input placeholder="name" type="text" [(ngModel)]="nname" name="nname">
-      <input placeholder="Password" type="password" [(ngModel)]="npassword" name="npassword">
-      <button (click)="signUp()">Sign Up</button>
-    </form>
-  </div>
-</div>

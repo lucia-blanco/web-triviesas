@@ -18,11 +18,11 @@ export class LoginComponent implements OnInit {
   error = false;
 
   constructor(private fbS: FirebaseService,
-              private router: Router) {
+    private router: Router) {
 
-                // $( '#register' ).click(function() {
-                //   $('.ui.longer.modal').modal('show');
-                // });
+    // $( '#register' ).click(function() {
+    //   $('.ui.longer.modal').modal('show');
+    // });
   }
 
   ngOnInit() {
@@ -31,18 +31,26 @@ export class LoginComponent implements OnInit {
   signIn() {
     console.log(this.email);
     this.fbS.emailLogin(this.email, this.password)
-    .then(res => {
+      .then(res => {
         if (this.fbS.currentUser) {
-            this.router.navigate(['/']);
+          this.router.navigate(['/']);
         } else {
           this.error = true;
         }
-    });
+      });
   }
 
   signUp() {
     this.fbS.emailReg(this.nemail, this.npassword, this.nname)
-    .then(res => this.router.navigate(['/']));
+      .then(res => this.router.navigate(['/']));
+  }
+
+  register() {
+    document.getElementById('register').style.display = 'inline';
+  }
+
+  close() {
+    document.getElementById('register').style.display = 'none';
   }
 
 }

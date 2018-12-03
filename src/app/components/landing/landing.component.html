@@ -1,19 +1,36 @@
 <main id="container">
-  <div>
-    <input [(ngModel)]="tableId" (ngModelChange)="goToTable($event)" />
-    <button i18n class="more" (click)="goToTable()">go to table</button>
+  <div class="ui action input">
+    <input type="text" [(ngModel)]="tableId" (ngModelChange)="goToTable($event)" placeholder="Table key">
+    <button class="ui button" (click)="goToTable()">Go to table</button>
   </div>
-  <a id="create" (click)="table()">Create table</a>
+  <div (click)="table()" class="ui button secondary" style="margin-left:5px">New table</div>
 
-  <button (click)="ask('0','easy')">ASK</button>
-  <div>
-    <h3>corrects: {{corrects}}</h3>
-    <h3>wrongs: {{wrongs}}</h3>
-    <div *ngIf="everything">
-      <h4>{{question}}</h4>
-      <div *ngFor="let answer of answers ; index as i;">
-        <button (click)="res(answer)">{{ answer }}</button>
+  <div style="width: 70px; margin-left: 20px" class="ui button positive" (click)="ask('0','easy')">Play</div>
+  <p style="color:#16AB39">right: {{corrects}}</p>
+  <p style="color:#f00">wrong: {{wrongs}}</p>
+  <ng-container *ngIf="everything">
+    <div class="ui cards">
+      <div class="card">
+        <div class="content">
+          <span class="right floated mini ui" style="background: #f00"></span>
+          <div class="header">
+            {{ question }}
+          </div>
+          <div class="meta">
+            {{everything['category']}}
+          </div>
+          <div class="description">
+
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+    <div class="ui cards">
+      <div class="card" *ngFor="let answer of answers ; index as i;">
+        <div class="content">
+          <div class="header" (click)="res(answer)">{{ answer }}</div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 </main>

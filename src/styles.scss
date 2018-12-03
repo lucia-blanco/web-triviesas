@@ -3,3 +3,15 @@ body {
   margin: 0;
   padding: 0;
 }
+
+main {
+  margin: 20px;
+  * {
+    margin-left: 20px;
+  }
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+}
