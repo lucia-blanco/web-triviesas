@@ -22,9 +22,9 @@ export class TableComponent implements OnInit, OnDestroy {
   tableId = '';
   table = {};
   players = [];
-  currentPlayer = {};
-  turn = 0;
+  currentPlayer;
   userId;
+  turn;
 
   constructor(private fbS: FirebaseService,
     private route: ActivatedRoute,
@@ -36,7 +36,7 @@ export class TableComponent implements OnInit, OnDestroy {
     this.tableId = this.route.snapshot.paramMap.get('id');
     console.log(this.tableId);
 
-    // console.log('subscribes to table');
+    console.log('subscribes to table ' + this.tableId);
     this.aFDb.object(environment.tableNode + '/' + this.tableId).valueChanges().subscribe(data => {
       this.table = data;
     });
@@ -45,33 +45,39 @@ export class TableComponent implements OnInit, OnDestroy {
     this.userId = fbS.currentUserId;
     // console.log('subscribes to players that are active');
     this.aFDb.list(environment.tableNode + '/' + this.tableId + '/players',
-      ref => ref.orderByChild('isActive').equalTo(true)).valueChanges().subscribe(data => {
+      ref => ref).valueChanges().subscribe(data => {
         this.players = data;
-        // console.log(`if player ${this.fbS.currentUserId} is not already in the table, adds it`);
+        console.log(this.players);
+        console.log(`if player ${this.fbS.currentUserId} is not already in the table, adds it`);
         this.players.forEach(player => {
           if (player.id === this.fbS.currentUserId) {
             this.isAlready = true;
-            // console.log('player is already in table');
+            console.log('player is already in table');
           }
           if (!this.isAlready) {
-            // console.log(`player ${this.fbS.currentUserId} added to table`);
+            console.log(`player ${this.fbS.currentUserId} added to table`);
             this.fbS.pushUserIntoTable(this.tableId);
           }
         });
-        if (this.players[this.turn].id != null) {
-          this.fbS.updateUserTableInfo(this.tableId, this.players[this.turn].id, this.players[this.turn].score, false, true);
-        }
+        // if (this.players[this.turn].id != null) {
+        //   this.fbS.updateUserTableInfo(this.tableId, this.players[this.turn].id, this.players[this.turn].score, false);
+        // }
       });
-    // console.log('subscribes to player whos isTurn is true');
-    this.aFDb.list(environment.tableNode + '/' + this.tableId + '/players',
-      ref => ref.orderByChild('isTurn').equalTo(true))
-      .valueChanges().subscribe(data => {
-        console.log(data);
-        this.currentPlayer = data[0];
+      this.aFDb.object(environment.tableNode + '/' + this.tableId + '/turn').valueChanges().subscribe(data => {
+        this.turn = data;
+        this.currentPlayer = (this.players[this.turn]);
+        console.log(this.currentPlayer);
       });
+    //   this.aFDb.list(environment.tableNode + '/' + this.tableId + '/players',
+    //   ref => ref.orderByChild('isTurn').equalTo(true))
+    //   .valueChanges().subscribe(data => {
+    //     this.currentPlayer = data[0];
+    //     console.log(this.currentPlayer);
+    // });
   }
 
   ngOnInit() {
+    // console.log('subscribes to player whos isTurn is true');
   }
 
   ngOnDestroy() {
@@ -87,14 +93,13 @@ export class TableComponent implements OnInit, OnDestroy {
   start() {
     console.log('started');
     this.fbS.playPauseTable(this.tableId, true);
-    this.fbS.updateUserTableInfo(this.tableId, this.players[this.turn].id, this.players[this.turn].score, true, true);
+    this.fbS.updateUserTableInfo(this.tableId, this.players[this.turn].id, this.players[this.turn].score, true);
     this.play();
   }
 
   // play round
   play() {
-    console.log('playing');
-    console.log('current player: ' + this.players[this.turn].name);
+    console.log('turn: ' + this.players[this.turn].name);
     // gets random category => see trivial.service
     const cat = [Math.floor((Math.random() * this.trS.categories.length))];
     console.log('categoty #' + cat);
@@ -127,7 +132,6 @@ export class TableComponent implements OnInit, OnDestroy {
       answers[i] = decodeURIComponent(answer);
     });
     console.log(question);
-    console.log(answers);
     console.log('Correct: ' + correct);
     console.log(this.trS.name);
     this.fbS.setQuestion(this.tableId, question, answers, correct, this.trS.name);
@@ -137,33 +141,29 @@ export class TableComponent implements OnInit, OnDestroy {
     console.log('Answer: ' + ans);
     if (encodeURIComponent(ans) === this.table['card']['correct']) {
       this.changeTurn(true);
-      console.log(this.players[this.turn].name);
-      console.log('ans: ' + encodeURIComponent(ans) + ' ' + this.table['card']['correct']);
     } else {
       this.changeTurn(false);
-      console.log(this.players[this.turn].name);
-      console.log(encodeURIComponent(ans) + ' ' + this.table['card']['correct']);
     }
-    this.play();
+    console.log(this.players[this.turn].name + ' answered: ' + encodeURIComponent(ans) + ' correct:' + this.table['card']['correct']);
   }
 
   changeTurn(correct) {
     if (correct) {
-      this.fbS.updateUserTableInfo(this.tableId, this.players[this.turn].id, this.players[this.turn].score + 1, true, true);
-      console.log('yes');
+      this.fbS.updateUserTableInfo(this.tableId, this.players[this.turn].id, this.players[this.turn].score + 1, true);
+      console.log('yes ' + this.players[this.turn].id);
     } else {
       // is it's not correct, isTurn is false, and next player's is true
-      this.fbS.updateUserTableInfo(this.tableId, this.players[this.turn].id, this.players[this.turn].score, false, true);
+      this.fbS.updateUserTableInfo(this.tableId, this.players[this.turn].id, this.players[this.turn].score, false);
+      console.log('no ' + this.players[this.turn].id);
       if (this.turn < this.players.length - 1) {
-        this.turn++;
+        this.fbS.changeTurn(this.tableId, this.turn + 1);
+        console.log('turn++');
       } else {
-        this.turn = 0;
+        this.fbS.changeTurn(this.tableId, 0);
+        console.log('turn 0');
       }
-      this.fbS.updateUserTableInfo(this.tableId, this.players[this.turn].id, this.players[this.turn].score, true, true);
-      console.log('no');
+      this.fbS.updateUserTableInfo(this.tableId, this.players[this.turn].id, this.players[this.turn].score, true);
     }
-    // changes current player, this shouldn't be necessary because i'm subscribed to it
-    // this.currentPlayer = this.players[this.turn];
-    // console.log('turn: ' + this.turn);
+    this.play();
   }
 }

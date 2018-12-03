@@ -3,16 +3,17 @@
     <input [(ngModel)]="tableId" (ngModelChange)="goToTable($event)" />
     <button i18n class="more" (click)="goToTable()">go to table</button>
   </div>
-  <button (click)="aaa()">aaa</button>
   <a id="create" (click)="table()">Create table</a>
 
   <button (click)="ask('0','easy')">ASK</button>
-  <h3>corrects: {{corrects}}</h3>
-  <h3>wrongs: {{wrongs}}</h3>
-  <div *ngIf="everything">
-    <h4>{{question}}</h4>
-    <div *ngFor="let answer of answers ; index as i;">
-      <button (click)="res(answer)">{{ answer }}</button>
+  <div>
+    <h3>corrects: {{corrects}}</h3>
+    <h3>wrongs: {{wrongs}}</h3>
+    <div *ngIf="everything">
+      <h4>{{question}}</h4>
+      <div *ngFor="let answer of answers ; index as i;">
+        <button (click)="res(answer)">{{ answer }}</button>
+      </div>
     </div>
   </div>
 </main>

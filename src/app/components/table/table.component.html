@@ -5,7 +5,7 @@
 </ul>
 <button *ngIf="players.length > 1 && !table.hasStarted" (click)="start()">start</button>
 
-<div *ngIf="table.hasStarted">
+<div *ngIf="table.hasStarted && table.card != undefined && currentPlayer != undefined">
   <h3>current player: {{ currentPlayer.name }}</h3>
 <div>
   <h2>{{ table.card.category }}</h2>
