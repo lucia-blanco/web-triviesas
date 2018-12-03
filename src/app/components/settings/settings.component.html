@@ -1,0 +1,12 @@
+<form #passwordForm="ngForm" (ngSubmit)="onSubmit(passwordForm)" class="form"> 
+  <div class="element TextField">
+    <input class="form-control" placeholder="New password" type="password" [(ngModel)]="newPassword" name="newPassword">
+  </div>
+  <div class="element TextField">
+    <input class="form-control" placeholder="Confirm new password" type="password" [(ngModel)]="confirmPassword" name="confirmPassword">
+  </div>
+  <nav>
+    <input [disabled]="!passwordForm.form.valid" type="submit" value="Send">
+    <span id="msg">{{message}}</span>
+  </nav>
+</form>

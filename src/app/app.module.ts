@@ -17,6 +17,7 @@ import { LoginComponent } from './components/login/login.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { TableComponent } from './components/table/table.component';
 import { BoardComponent } from './components/board/board.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { BoardComponent } from './components/board/board.component';
     LoginComponent,
     LandingComponent,
     TableComponent,
-    BoardComponent
+    BoardComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

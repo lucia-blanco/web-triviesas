@@ -1,14 +1,25 @@
-<h3>Sign In</h3>
-<form>
-  <input placeholder="Email address" type="text" [(ngModel)]="email" name="email">
-  <input placeholder="Password" type="password" [(ngModel)]="password" name="password">
-  <button (click)="signIn()">Sign In</button>
-</form>
+<main>
+  <div id="wrapper">
+    <h1>triviesas</h1>
+    <form class="ui form">
+      <input placeholder="Email address" type="text" [(ngModel)]="email" name="email">
+      <input placeholder="Password" type="password" [(ngModel)]="password" name="password">
+      <button (click)="signIn()" class="ui button">Sign In</button>
+    </form>
+    <a id="register">Not registered yet?</a>
+  </div>
+</main>
 
-<h3>Sign Up</h3>
-<form>
-  <input placeholder="Email address" type="email" [(ngModel)]="nemail" name="nemail">
-  <input placeholder="name" type="text" [(ngModel)]="nname" name="nname">
-  <input placeholder="Password" type="password" [(ngModel)]="npassword" name="npassword">
-  <button (click)="signUp()">Sign Up</button>
-</form>
+<div class="ui modal">
+  <div class="header">
+    Sign Up
+  </div>
+  <div class="content">
+    <form>
+      <input placeholder="Email address" type="email" [(ngModel)]="nemail" name="nemail">
+      <input placeholder="name" type="text" [(ngModel)]="nname" name="nname">
+      <input placeholder="Password" type="password" [(ngModel)]="npassword" name="npassword">
+      <button (click)="signUp()">Sign Up</button>
+    </form>
+  </div>
+</div>

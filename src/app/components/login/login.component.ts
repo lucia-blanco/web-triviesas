@@ -19,6 +19,10 @@ export class LoginComponent implements OnInit {
 
   constructor(private fbS: FirebaseService,
               private router: Router) {
+
+                // $( '#register' ).click(function() {
+                //   $('.ui.longer.modal').modal('show');
+                // });
   }
 
   ngOnInit() {
@@ -30,7 +34,6 @@ export class LoginComponent implements OnInit {
     .then(res => {
         if (this.fbS.currentUser) {
             this.router.navigate(['/']);
-            console.log('eyy');
         } else {
           this.error = true;
         }

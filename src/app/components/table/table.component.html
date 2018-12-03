@@ -5,13 +5,15 @@
 </ul>
 <button *ngIf="players.length > 1 && !table.hasStarted" (click)="start()">start</button>
 
-<div *ngIf="table.hasStarted && currentPlayer">
+<div *ngIf="table.hasStarted">
   <h3>current player: {{ currentPlayer.name }}</h3>
 <div>
   <h2>{{ table.card.category }}</h2>
   <h4>{{ table.card.question }}</h4>
-  <div *ngFor="let answer of table.card.answers ; index as i;">
-    <button (click)="res(answer)">{{ answer }}</button>
-  </div>
+  <ng-container *ngFor="let answer of table.card.answers ; index as i;">
+    <div *ngIf="currentPlayer.id == userId">
+      <button (click)="res(answer)">{{ answer }}</button>
+    </div>
+  </ng-container>
 </div>
 </div>

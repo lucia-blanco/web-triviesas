@@ -148,7 +148,7 @@ export class FirebaseService {
     this.afDb.list(path).update(tableId, {hasStarted: started});
   }
 
-  getQuestion(tableId, question, answers, correct, category) {
+  setQuestion(tableId, question, answers, correct, category) {
     const path = environment.tableNode;
     this.afDb.list(path).set(tableId + '/card', {question: question, answers: answers, correct: correct, category: category});
   }
@@ -160,16 +160,18 @@ export class FirebaseService {
       name: this.authState.displayName,
       isTurn: false,
       score: 0,
+      isActive: true
     };
     console.log(this.authState.displayName);
     this.afDb.object(path).set(data);
   }
 
-  updateUserTableInfo(tableId, uid, points, turn) {
+  updateUserTableInfo(tableId, uid, points, turn, active) {
     const path = environment.tableNode +  `/${tableId}/players/${uid}`;
     const data = {
       isTurn: turn,
-      score: points
+      score: points,
+      isActive: active
     };
     this.afDb.object(path).update(data);
     console.log('user table info updated');

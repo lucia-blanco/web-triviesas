@@ -46,6 +46,7 @@ export class LandingComponent implements OnInit {
   }
 
   table() {
+    console.log('creating table...');
     this.tableId = this.fbS.createTable();
     console.log(this.tableId);
     this.router.navigate(['/table', this.tableId]);

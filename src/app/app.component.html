@@ -1,8 +1,24 @@
 <div *ngIf="!fbS.currentUser">
   <app-login></app-login>
 </div>
-<button *ngIf="fbS.currentUser" (click)="signOut()">Sign Out</button>
-<div *ngIf="fbS.currentUser">
-  <router-outlet></router-outlet>
-</div>
 
+<section *ngIf="fbS.currentUser">
+  <div class="ui small menu" style="border-radius: 0;">
+    <a class="active item" routerLink="">
+      Triviesas
+    </a>
+    <a class="item" routerLink="/friends">
+      Friends
+    </a>
+    <div class="right menu" routerLink="/settings">
+      <a class="item">
+        Settings
+      </a>
+      <a class="item" (click)="signOut()">
+        <i class="sign-out icon"></i>
+        Sign Out
+      </a>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+</section>

@@ -21,9 +21,12 @@
     "@angular/platform-browser": "~7.0.0",
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
+    "@types/jquery": "^3.3.22",
     "core-js": "^2.5.4",
     "firebase": "^5.5.8",
+    "jquery": "^3.3.1",
     "rxjs": "~6.3.3",
+    "semantic-ui": "^2.4.2",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
