@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { FirebaseService } from './../../firebase.service';
 import { TrivialService } from './../../trivial.service';
+import { environment } from '../../../environments/environment';
+
 
 
 @Component({
@@ -23,16 +25,23 @@ export class LandingComponent implements OnInit {
   score;
   cat = 0;
   tableId = null;
+  tables;
 
   constructor(private fbS: FirebaseService,
               private trS: TrivialService,
               public aFDb: AngularFireDatabase,
               private router: Router) {
+
     fbS.currentUserObservable.subscribe(user => {
       this.aFDb.object('/player/' + user.uid).valueChanges().subscribe(data => {
         this.corrects = data['corrects'];
         this.wrongs = data['wrongs'];
       });
+    });
+
+    this.aFDb.list(environment.playerNode + '/' + fbS.currentUserId + '/tables',
+    ref => ref).valueChanges().subscribe(data => {
+      this.tables = data;
     });
   }
 

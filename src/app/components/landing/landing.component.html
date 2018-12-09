@@ -1,11 +1,29 @@
 <main id="container">
+  <h1>Hello, {{ fbS.currentUserDisplayName }}</h1>
   <div class="ui action input">
     <input type="text" [(ngModel)]="tableId" (ngModelChange)="goToTable($event)" placeholder="Table key">
     <button class="ui button" (click)="goToTable()">Go to table</button>
   </div>
   <div (click)="table()" class="ui button secondary" style="margin-left:5px">New table</div>
-
   <div style="width: 70px; margin-left: 20px" class="ui button positive" (click)="ask('0','easy')">Play</div>
+
+  <div class="ui cards" style="margin:10px; cursor: pointer;">
+    <div class="card" *ngFor="let table of tables" [routerLink]="['/table', table.id]">
+      <div class="content">
+        <span class="right floated mini ui"></span>
+        <div class="header">
+          {{ table.id }}
+        </div>
+        <div class="meta">
+        </div>
+        <div class="description">
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
   <p style="color:#16AB39">right: {{corrects}}</p>
   <p style="color:#f00">wrong: {{wrongs}}</p>
   <ng-container *ngIf="everything">

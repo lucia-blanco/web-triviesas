@@ -18,6 +18,7 @@ import { LandingComponent } from './components/landing/landing.component';
 import { TableComponent } from './components/table/table.component';
 import { BoardComponent } from './components/board/board.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { RankingComponent } from './components/ranking/ranking.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { SettingsComponent } from './components/settings/settings.component';
     LandingComponent,
     TableComponent,
     BoardComponent,
-    SettingsComponent
+    SettingsComponent,
+    RankingComponent
   ],
   imports: [
     BrowserModule,

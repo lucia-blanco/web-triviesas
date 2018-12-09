@@ -1,0 +1,18 @@
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>User</th>
+      <th>Correct</th>
+      <th>Wrong</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let player of players; let index = index">
+      <td>{{ index + 1 }}</td>
+      <td data-label="User">{{ player.name }}</td>
+      <td data-label="Correct">{{ player.corrects }}</td>
+      <td data-label="Wrong">{{ player.wrongs }}</td>
+    </tr>
+  </tbody>
+</table>

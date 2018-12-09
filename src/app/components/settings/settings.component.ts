@@ -18,19 +18,15 @@ export class SettingsComponent implements OnInit {
   }
 
   onSubmit(passwordForm) {
-    if (this.newPassword.trim() === this.confirmPassword.trim()) {
+    if (this.newPassword.trim() === this.confirmPassword.trim() && this.newPassword.length > 6 ) {
       this.fbS.changePassword(this.newPassword.trim()).then(res => {
         document.getElementById('msg').style.color = ('green');
         this.message = 'Changed successfully!';
-      })
-      .catch(error => {
-        document.getElementById('msg').style.color = ('red');
-        this.message = error;
       });
       passwordForm.reset();
     } else {
       document.getElementById('msg').style.color = ('red');
-      this.message = 'Passwords don\'t match!';
+      this.message = 'Something happened, try another password (6+ characters)';
     }
   }
 

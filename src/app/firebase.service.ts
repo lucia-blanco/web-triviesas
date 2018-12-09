@@ -114,11 +114,10 @@ export class FirebaseService {
   }
 
   updatePlayerData(corrects, wrongs) {
-    console.log(this.currentUserId);
     const path = environment.playerNode + `/${this.currentUserId}`;
     console.log(path);
     const data = {
-        email: this.authState.email,
+        name: this.currentUserDisplayName,
         corrects: corrects,
         wrongs: wrongs
     };
@@ -141,6 +140,7 @@ export class FirebaseService {
     console.log(data);
     const table = this.afDb.list(path).push(data);
     this.pushUserIntoTable(table.key);
+    this.pushTableIntoUser(table.key);
     return table.key;
   }
 
@@ -170,6 +170,14 @@ export class FirebaseService {
       score: 0
     };
     console.log(this.authState.displayName);
+    this.afDb.object(path).set(data);
+  }
+
+  pushTableIntoUser(id) {
+    const path = environment.playerNode +  `/${this.currentUserId}/tables/${id}`;
+    const data = {
+      id: id
+    };
     this.afDb.object(path).set(data);
   }
 
