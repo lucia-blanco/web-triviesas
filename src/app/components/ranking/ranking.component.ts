@@ -12,6 +12,7 @@ export class RankingComponent implements OnInit {
   players;
 
   constructor(public aFDb: AngularFireDatabase) {
+    // orders user by the number of correct answers
     this.aFDb.list(environment.playerNode,
     ref => ref.orderByChild('corrects')).valueChanges().subscribe(data => {
       this.players = data.reverse();

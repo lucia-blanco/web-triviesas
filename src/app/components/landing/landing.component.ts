@@ -65,9 +65,8 @@ export class LandingComponent implements OnInit {
     this.trS.getQuestion(cat, dif).subscribe(everything => {
       this.everything = everything['results'][0];
       this.question = everything['results'][0]['question'];
-      console.log(this.everything);
+      // answer comes encoded, so we need to encode/decode sometimes
       this.question = decodeURIComponent(this.question);
-      console.log(this.question);
       this.answers = everything['results'][0]['incorrect_answers'];
       this.answers.push(everything['results'][0]['correct_answer']);
       this.arrangeAnswers();
@@ -77,6 +76,7 @@ export class LandingComponent implements OnInit {
   }
 
   arrangeAnswers() {
+    // sorts answeres randomly
     this.answers.sort(
       function() {
         return 0.5 - Math.random();
@@ -85,11 +85,9 @@ export class LandingComponent implements OnInit {
     this.answers.forEach((answer, i) => {
       this.answers[i] = decodeURIComponent(answer);
     });
-    console.log(this.answers);
   }
 
   res(ans) {
-    console.log(ans);
     if (encodeURIComponent(ans) === this.everything.correct_answer) {
       this.correct = true;
       this.corrects++;
@@ -97,9 +95,10 @@ export class LandingComponent implements OnInit {
       this.correct = false;
       this.wrongs++;
     }
-    console.log(this.correct);
     this.fbS.updatePlayerData(this.corrects, this.wrongs);
 
+    // asks questions from all the categories
+    // TO DO chose difficulty
     this.ask(this.cat, 'medium');
     if (this.cat < 4) {
       this.cat++;

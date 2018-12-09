@@ -31,7 +31,7 @@ export class TableComponent implements OnInit, OnDestroy {
     private trS: TrivialService,
     public aFDb: AngularFireDatabase) {
 
-    // console.log('gets param from url (table key)');
+    // cgets param from url (table key);
     // TO DO split table key, this is NOT secure (and also a pain to write)
     this.tableId = this.route.snapshot.paramMap.get('id');
     console.log(this.tableId);
@@ -41,9 +41,9 @@ export class TableComponent implements OnInit, OnDestroy {
       this.table = data;
     });
 
-    // console.log('gets current user id');
+    // gets current user id;
     this.userId = fbS.currentUserId;
-    // console.log('subscribes to players that are active');
+    // subscribes to players that are active;
     this.aFDb.list(environment.tableNode + '/' + this.tableId + '/players',
       ref => ref).valueChanges().subscribe(data => {
         this.players = data;
@@ -59,34 +59,18 @@ export class TableComponent implements OnInit, OnDestroy {
             this.fbS.pushUserIntoTable(this.tableId);
           }
         });
-        // if (this.players[this.turn].id != null) {
-        //   this.fbS.updateUserTableInfo(this.tableId, this.players[this.turn].id, this.players[this.turn].score, false);
-        // }
       });
       this.aFDb.object(environment.tableNode + '/' + this.tableId + '/turn').valueChanges().subscribe(data => {
         this.turn = data;
         this.currentPlayer = (this.players[this.turn]);
         console.log(this.currentPlayer);
       });
-    //   this.aFDb.list(environment.tableNode + '/' + this.tableId + '/players',
-    //   ref => ref.orderByChild('isTurn').equalTo(true))
-    //   .valueChanges().subscribe(data => {
-    //     this.currentPlayer = data[0];
-    //     console.log(this.currentPlayer);
-    // });
   }
 
   ngOnInit() {
-    // console.log('subscribes to player whos isTurn is true');
   }
 
   ngOnDestroy() {
-    // console.log(this.fbS.currentUserId + ' left table');
-    // if (this.players[this.turn].id === this.fbS.currentUserId && this.players.length > 1) {
-    //   this.fbS.updateUserTableInfo(this.tableId, this.players[this.turn].id, this.players[this.turn].score, false, false);
-    //   this.turn++;
-    //   this.play();
-    // }
   }
 
   // starts game
@@ -150,17 +134,13 @@ export class TableComponent implements OnInit, OnDestroy {
   changeTurn(correct) {
     if (correct) {
       this.fbS.updateUserTableInfo(this.tableId, this.players[this.turn].id, this.players[this.turn].score + 1, true);
-      console.log('yes ' + this.players[this.turn].id);
     } else {
       // is it's not correct, isTurn is false, and next player's is true
       this.fbS.updateUserTableInfo(this.tableId, this.players[this.turn].id, this.players[this.turn].score, false);
-      console.log('no ' + this.players[this.turn].id);
       if (this.turn < this.players.length - 1) {
         this.fbS.changeTurn(this.tableId, this.turn + 1);
-        console.log('turn++');
       } else {
         this.fbS.changeTurn(this.tableId, 0);
-        console.log('turn 0');
       }
       this.fbS.updateUserTableInfo(this.tableId, this.players[this.turn].id, this.players[this.turn].score, true);
     }
